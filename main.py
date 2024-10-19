@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 
 running = True
 
-game = g.Game(screen)
+game = g.Game(screen, screen_rect)
 # Main game loop.
 while running:
     # Poll for events. Iterate through every event in the queue.

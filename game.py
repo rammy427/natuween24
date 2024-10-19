@@ -1,8 +1,11 @@
+import crosshair as c
 import pygame
 
 class Game:
-    def __init__(self, screen):
+    def __init__(self, screen, screen_rect):
         self.screen = screen
+        self.screen_rect = screen_rect
+        self.crosshair = c.Crosshair(screen_rect.center)
 
     def run(self):
         # Fill the screen with color to clear previous frame.
@@ -13,7 +16,7 @@ class Game:
         pygame.display.flip()
 
     def update_frame(self):
-        pass
+        self.crosshair.update(self.screen_rect)
 
     def render_frame(self):
-       pass
+       self.crosshair.draw(self.screen)
