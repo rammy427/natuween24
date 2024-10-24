@@ -3,8 +3,8 @@ import pygame
 class Crosshair:
     def __init__(self, pos):
         self.pos = pos
-        self.WIDTH = 30
-        self.HEIGHT = 30
+        self.WIDTH = 20
+        self.HEIGHT = 20
         self.rect = pygame.Rect(pos, (self.WIDTH, self.HEIGHT))
 
     def update(self, screen_rect):
