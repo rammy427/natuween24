@@ -2,8 +2,11 @@ import crosshair as c
 import cat as ct
 import pygame
 
+FPS = 144
+
 class Game:
     def __init__(self, screen, screen_rect):
+        self.clock = pygame.time.Clock()
         self.screen = screen
         self.screen_rect = screen_rect
         self.crosshair = c.Crosshair(screen_rect.center)
@@ -18,8 +21,9 @@ class Game:
         pygame.display.flip()
 
     def update_frame(self):
+        dt = self.clock.tick(FPS) / 1000
         self.crosshair.update(self.screen_rect)
-        self.puma.update(self.screen_rect)
+        self.puma.update(self.screen_rect, dt)
 
     def render_frame(self):
        self.puma.draw(self.screen)

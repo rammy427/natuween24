@@ -6,15 +6,12 @@ pygame.init()
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-FPS = 60
 
 # screen is a Surface (to render game onto).
 # set_mode returns a Surface.
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 screen_rect = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 pygame.display.set_caption("Judgment Cat")
-
-clock = pygame.time.Clock()
 
 running = True
 
@@ -38,8 +35,5 @@ while running:
                 pygame.mouse.set_visible(not locked)
 
     game.run()
-
-    # Limit framerate.
-    clock.tick(FPS)
 
 pygame.quit()
