@@ -26,6 +26,9 @@ class Cat:
             self.cur_time += dt
             v = self.LAUNCH_SPEED - self.GRAVITY * self.cur_time
             self.rect.move_ip(0, -v)
+            if not screen_rect.contains(self.rect):
+                self.cur_time = 0
+                self.isJumping = False
         
         self.rect.clamp_ip(screen_rect)
     
