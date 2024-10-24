@@ -35,7 +35,7 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 locked = not locked
                 pygame.event.set_grab(locked)
-                pygame.event.set_grab(not locked)
+                pygame.mouse.set_visible(not locked)
 
     game.run()
 
