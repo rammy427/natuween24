@@ -19,12 +19,23 @@ clock = pygame.time.Clock()
 running = True
 
 game = g.Game(screen, screen_rect)
+
+# Lock the mouse inside the window.
+locked = True
+pygame.event.set_grab(True)
+pygame.mouse.set_visible(False)
+
 # Main game loop.
 while running:
     # Poll for events. Iterate through every event in the queue.
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                locked = not locked
+                pygame.event.set_grab(locked)
+                pygame.event.set_grab(not locked)
 
     game.run()
 
