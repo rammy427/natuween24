@@ -4,7 +4,7 @@ import bullet as b
 import enemy as e
 import pygame
 
-FPS = 144
+FPS = 60
 
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
@@ -31,6 +31,8 @@ class Game:
         self.__puma.update(self.__screen_rect, dt)
         for bullet in self.__bullets:
             bullet.update(dt)
+        for enemy in self.__enemies:
+            enemy.update(dt)
         
         self.doBulletEnemyCollisions()
 
