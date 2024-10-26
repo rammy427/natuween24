@@ -8,14 +8,15 @@ FPS = 60
 
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
+        self.__SPAWN_TIME = 2
         self.__clock = pygame.time.Clock()
+        self.__cur_time = 0.0
         self.__screen = screen
         self.__screen_rect = screen_rect
         self.__crosshair = c.Crosshair()
         self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
-        self.__enemies.add(e.Enemy(screen_rect))
 
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
@@ -26,7 +27,17 @@ class Game:
         pygame.display.flip()
 
     def update_frame(self) -> None:
+        # Calculate delta time in milliseconds.
         dt = self.__clock.tick(FPS) / 1000
+
+        self.__cur_time += dt
+        if (self.__cur_time >= self.__SPAWN_TIME):
+            # Spawn a new enemy.
+            self.__enemies.add(e.Enemy(self.__screen_rect))
+            # Reset timer.
+            self.__cur_time = 0
+
+        # Update the entities' transformations.
         self.__crosshair.update(self.__screen_rect)
         self.__puma.update(self.__screen_rect, dt)
         for bullet in self.__bullets:
@@ -60,6 +71,6 @@ class Game:
                     marked_bullets.add(bullet)
                     marked_enemies.add(enemy)
         
-        # Remove the marked bullets and enemies from the original
+        # Remove the marked bullets and enemies from the original set.
         self.__bullets -= marked_bullets
         self.__enemies -= marked_enemies
