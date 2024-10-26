@@ -1,7 +1,7 @@
 import pygame
 
 class Cat:
-    def __init__(self, center):
+    def __init__(self, center: pygame.Vector2) -> None:
         self.__WIDTH = 96
         self.__HEIGHT = 48
         self.__SPEED = 500
@@ -12,7 +12,7 @@ class Cat:
         self.__isJumping = False
         self.__cur_time = 0
 
-    def update(self, screen_rect, dt):
+    def update(self, screen_rect: pygame.Rect, dt: float) -> None:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.__rect.move_ip(-self.__SPEED * dt, 0)
@@ -32,8 +32,8 @@ class Cat:
         
         self.__rect.clamp_ip(screen_rect)
     
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface) -> None:
         pygame.draw.rect(screen, "yellow", self.__rect)
 
-    def getPos(self):
+    def getPos(self) -> pygame.Vector2:
         return self.__rect.center
