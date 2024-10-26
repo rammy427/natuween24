@@ -14,4 +14,7 @@ class Bullet:
         self.__rect.move_ip(self.__DIR * self.__SPEED * dt)
     
     def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.rect(screen, "red", self.__rect)
+        pygame.draw.rect(screen, "green", self.__rect)
+    
+    def getRect(self) -> pygame.Rect:
+        return self.__rect
