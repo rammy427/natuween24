@@ -2,11 +2,13 @@ import pygame
 
 class Cat:
     def __init__(self, center: pygame.Vector2) -> None:
+        self.__MAX_HP = 9
         self.__WIDTH = 96
         self.__HEIGHT = 48
         self.__SPEED = 500
         self.__GRAVITY = 9.8
         self.__LAUNCH_SPEED = 4
+        self.__hp = self.__MAX_HP
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
         self.__isJumping = False
@@ -31,6 +33,16 @@ class Cat:
 
     def getPos(self) -> pygame.Vector2:
         return self.__rect.center
+    
+    def getRect(self) -> pygame.Rect:
+        return self.__rect
+    
+    def takeDamage(self) -> None:
+        self.__hp -= 1
+        print("Life: %s." % self.__hp)
+
+    def isAlive(self) -> bool:
+        return self.__hp > 0
     
     def __jump(self, screen_rect: pygame.Rect, dt: float) -> None:
         if self.__isJumping:

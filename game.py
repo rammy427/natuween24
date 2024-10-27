@@ -29,23 +29,28 @@ class Game:
     def update_frame(self) -> None:
         # Calculate delta time in milliseconds.
         dt = self.__clock.tick(FPS) / 1000
+        gameIsOver = not self.__puma.isAlive()
 
-        self.__cur_time += dt
-        if (self.__cur_time >= self.__SPAWN_TIME):
-            # Spawn a new enemy.
-            self.__enemies.add(e.Enemy(self.__screen_rect))
-            # Reset timer.
-            self.__cur_time = 0
+        if not gameIsOver:
+            self.__cur_time += dt
+            if (self.__cur_time >= self.__SPAWN_TIME):
+                # Spawn a new enemy.
+                self.__enemies.add(e.Enemy(self.__screen_rect))
+                # Reset timer.
+                self.__cur_time = 0
 
-        # Update the entities' transformations.
-        self.__crosshair.update(self.__screen_rect)
-        self.__puma.update(self.__screen_rect, dt)
-        for bullet in self.__bullets:
-            bullet.update(dt)
-        for enemy in self.__enemies:
-            enemy.update(dt)
-        
-        self.doBulletEnemyCollisions()
+            # Update the entities' transformations.
+            self.__crosshair.update(self.__screen_rect)
+            self.__puma.update(self.__screen_rect, dt)
+            for bullet in self.__bullets:
+                bullet.update(dt)
+            for enemy in self.__enemies:
+                if enemy.getRect().colliderect(self.__puma.getRect()):
+                    self.__puma.takeDamage()
+
+                enemy.update(dt)
+            
+            self.doBulletEnemyCollisions()
 
     def render_frame(self) -> None:
        self.__puma.draw(self.__screen)
