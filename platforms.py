@@ -3,8 +3,7 @@ import pygame
 class Platform:
     def __init__(self, pos: pygame.Vector2, width: int) -> None:
         self.__HEIGHT = 10
-        self.__width = width
-        self.__rect = pygame.Rect((0, 0), (self.__width, self.__HEIGHT))
+        self.__rect = pygame.Rect((0, 0), (width, self.__HEIGHT))
         self.__rect.center = pos
         self.__color = "blue"
 

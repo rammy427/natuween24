@@ -20,7 +20,16 @@ class Game:
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()
-        self.__platforms.add(p.Platform((screen_rect.centerx, screen_rect.bottom - 60), 200))
+
+        # Add 5 platforms.
+        width = 400
+        half_width = width // 2
+        vertical = 100
+        self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.top + vertical), width))
+        self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.bottom - vertical), width))
+        self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.top + vertical), width))
+        self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.bottom - vertical), width))
+        self.__platforms.add(p.Platform(screen_rect.center, width))
 
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
