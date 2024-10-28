@@ -39,7 +39,7 @@ class Game:
             self.__cur_time += dt
             if (self.__cur_time >= self.__SPAWN_TIME):
                 # Spawn a new enemy.
-                # self.__enemies.add(e.Enemy(self.__screen_rect))
+                self.__enemies.add(e.Enemy(self.__screen_rect))
                 # Reset timer.
                 self.__cur_time = 0
 
@@ -51,7 +51,7 @@ class Game:
             for enemy in self.__enemies:
                 if enemy.getRect().colliderect(self.__puma.getRect()):
                     self.__puma.takeDamage()
-                enemy.update(dt)
+                enemy.update(self.__screen_rect, self.__platforms, dt)
             
             self.doBulletEnemyCollisions()
 
