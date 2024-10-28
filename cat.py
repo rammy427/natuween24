@@ -1,4 +1,5 @@
 import pygame
+import platforms as p
 
 class Cat:
     def __init__(self, center: pygame.Vector2) -> None:
@@ -17,7 +18,7 @@ class Cat:
         self.__is_invincible = False
         self.__cur_god_time = 0
 
-    def update(self, screen_rect: pygame.Rect, dt: float) -> None:
+    def update(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
         # Process movement inputs.
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -36,7 +37,7 @@ class Cat:
         if keys[pygame.K_w] and not self.__is_jumping:
             self.__is_jumping = True
         
-        self.__jump(screen_rect, dt)
+        self.__jump(screen_rect, platforms, dt)
         self.__rect.clamp_ip(screen_rect)
     
     def draw(self, screen: pygame.Surface) -> None:
@@ -57,16 +58,21 @@ class Cat:
     def isAlive(self) -> bool:
         return self.__hp > 0
     
-    def __jump(self, screen_rect: pygame.Rect, dt: float) -> None:
+    def __jump(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
         if self.__is_jumping:
             self.__cur_jump_time += dt
             v = self.__LAUNCH_SPEED - self.__GRAVITY * self.__cur_jump_time
             self.__rect.move_ip(0, -v)
-            if self.__hasHitGround(screen_rect):
+            if self.__hasHitGround(screen_rect, platforms):
                 # Move back a unit of v so we don't go out of bounds.
                 self.__rect.move_ip(0, v)
                 self.__cur_jump_time = 0
                 self.__is_jumping = False
 
-    def __hasHitGround(self, screen_rect: pygame.Rect) -> bool:
-        return self.__rect.bottom >= screen_rect.bottom
+    def __hasHitGround(self, screen_rect: pygame.Rect, platforms: set[p.Platform]) -> bool:
+        if self.__rect.bottom >= screen_rect.bottom:
+            return True
+        for platform in platforms:
+            if self.__rect.colliderect(platform.getRect()):
+                return True
+        return False

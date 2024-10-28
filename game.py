@@ -2,7 +2,7 @@ import crosshair as c
 import cat as ct
 import bullet as b
 import enemy as e
-import platforms
+import platforms as p
 import pygame
 
 FPS = 60
@@ -18,7 +18,8 @@ class Game:
         self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
-        self.__platform = platforms.Platform((screen_rect.centerx, screen_rect.bottom - 50), 200)
+        self.__platforms: set[p.Platform] = set()
+        self.__platforms.add(p.Platform((screen_rect.centerx, screen_rect.bottom - 50), 200))
 
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
@@ -43,13 +44,12 @@ class Game:
 
             # Update the entities' transformations.
             self.__crosshair.update(self.__screen_rect)
-            self.__puma.update(self.__screen_rect, dt)
+            self.__puma.update(self.__screen_rect, self.__platforms, dt)
             for bullet in self.__bullets:
                 bullet.update(dt)
             for enemy in self.__enemies:
                 if enemy.getRect().colliderect(self.__puma.getRect()):
                     self.__puma.takeDamage()
-
                 enemy.update(dt)
             
             self.doBulletEnemyCollisions()
@@ -57,7 +57,8 @@ class Game:
     def render_frame(self) -> None:
        self.__puma.draw(self.__screen)
        self.__crosshair.draw(self.__screen)
-       self.__platform.draw(self.__screen)
+       for platform in self.__platforms:
+           platform.draw(self.__screen)
        for enemy in self.__enemies:
            enemy.draw(self.__screen)
        for bullet in self.__bullets:
