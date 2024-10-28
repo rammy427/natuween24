@@ -4,10 +4,12 @@ import platforms as p
 
 class Enemy:
     def __init__(self, screen_rect: pygame.Rect) -> None:
+        self.__MAX_HP = 3
         self.__WIDTH = 20
         self.__HEIGHT = 40
         self.__SPEED = 500
         self.__GRAVITY = 9.8
+        self.__hp = self.__MAX_HP
         self.__screen_rect = screen_rect
         self.__rect = pygame.Rect((0, 0), (self.__WIDTH, self.__HEIGHT))
         self.__color = pygame.Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
@@ -37,6 +39,13 @@ class Enemy:
     
     def draw(self, screen: pygame.Surface) -> None:
         pygame.draw.rect(screen, self.__color, self.__rect)
+    
+    def takeDamage(self) -> None:
+        self.__hp -= 1
+        print("Enemy life: %s." % self.__hp)
+
+    def isAlive(self) -> bool:
+        return self.__hp > 0
     
     def getRect(self) -> pygame.Rect:
         return self.__rect

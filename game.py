@@ -9,7 +9,7 @@ FPS = 60
 
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
-        self.__SPAWN_TIME = 1
+        self.__SPAWN_TIME = 3
         self.__clock = pygame.time.Clock()
         self.__cur_time = 0.0
         self.__screen = screen
@@ -90,8 +90,12 @@ class Game:
             for enemy in self.__enemies:
                 if bullet.getRect().colliderect(enemy.getRect()):
                     print("Collision detected!")
+                    # Mark the bullet to destroy it.
                     marked_bullets.add(bullet)
-                    marked_enemies.add(enemy)
+                    # Process enemy damage.
+                    enemy.takeDamage()
+                    if not enemy.isAlive():
+                        marked_enemies.add(enemy)
         
         # Remove the marked bullets and enemies from the original set.
         self.__bullets -= marked_bullets
