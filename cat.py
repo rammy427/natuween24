@@ -38,8 +38,9 @@ class Cat:
         # if keys[pygame.K_w] and not self.__is_jumping:
         #     self.__is_jumping = True
         
-        self.__fall(screen_rect, platforms, dt)
+        self.__fall(dt)
         # self.__jump(screen_rect, platforms, dt)
+        self.__lockToGround(screen_rect, platforms)
         self.__rect.clamp_ip(screen_rect)
     
     def draw(self, screen: pygame.Surface) -> None:
@@ -60,16 +61,13 @@ class Cat:
     def isAlive(self) -> bool:
         return self.__hp > 0
     
-    def __fall(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
-        if self.__isOnGround(screen_rect, platforms):
-            self.__fall_speed = 0
-        else:
-            self.__fall_speed += self.__GRAVITY * dt
-            self.__rect.move_ip(0, self.__fall_speed)
-
     def jump(self):
         self.__rect.move_ip(0, -1)
         self.__fall_speed -= self.__LAUNCH_SPEED
+    
+    def __fall(self, dt: float) -> None:
+        self.__fall_speed += self.__GRAVITY * dt
+        self.__rect.move_ip(0, self.__fall_speed)
 
     # def __jump(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
     #     if self.__is_jumping:
@@ -82,10 +80,11 @@ class Cat:
     #             self.__cur_jump_time = 0
     #             self.__is_jumping = False
 
-    def __isOnGround(self, screen_rect: pygame.Rect, platforms: set[p.Platform]) -> bool:
+    def __lockToGround(self, screen_rect: pygame.Rect, platforms: set[p.Platform]) -> None:
         if self.__rect.bottom >= screen_rect.bottom:
-            return True
+            self.__rect.bottom = screen_rect.bottom
+            self.__fall_speed = 0
         for platform in platforms:
             if self.__rect.colliderect(platform.getRect()):
-                return True
-        return False
+                self.__rect.bottom = platform.getRect().top
+                self.__fall_speed = 0

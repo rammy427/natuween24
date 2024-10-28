@@ -20,7 +20,7 @@ class Game:
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()
-        self.__platforms.add(p.Platform((screen_rect.centerx, screen_rect.bottom - 50), 200))
+        self.__platforms.add(p.Platform((screen_rect.centerx, screen_rect.bottom - 60), 200))
 
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
