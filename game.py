@@ -3,6 +3,7 @@ import cat as ct
 import bullet as b
 import enemy as e
 import platforms as p
+import text as t
 import pygame
 
 FPS = 60
@@ -14,6 +15,7 @@ class Game:
         self.__cur_time = 0.0
         self.__screen = screen
         self.__screen_rect = screen_rect
+        self.__text_manager = t.TextManager(screen_rect)
         self.__crosshair = c.Crosshair()
         self.__puma = ct.Cat((screen_rect.centerx, 50))
         # self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
@@ -79,6 +81,7 @@ class Game:
            enemy.draw(self.__screen)
        for bullet in self.__bullets:
            bullet.draw(self.__screen)
+       self.__text_manager.drawScore(self.__score, self.__top_score, self.__screen)
 
     def spawn_bullet(self) -> None:
         puma_pos = pygame.Vector2(self.__puma.getPos())
