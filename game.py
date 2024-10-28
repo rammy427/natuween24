@@ -2,6 +2,7 @@ import crosshair as c
 import cat as ct
 import bullet as b
 import enemy as e
+import platforms
 import pygame
 
 FPS = 60
@@ -17,6 +18,7 @@ class Game:
         self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
+        self.__platform = platforms.Platform((screen_rect.centerx, screen_rect.bottom - 50), 200)
 
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
@@ -35,7 +37,7 @@ class Game:
             self.__cur_time += dt
             if (self.__cur_time >= self.__SPAWN_TIME):
                 # Spawn a new enemy.
-                self.__enemies.add(e.Enemy(self.__screen_rect))
+                # self.__enemies.add(e.Enemy(self.__screen_rect))
                 # Reset timer.
                 self.__cur_time = 0
 
@@ -55,6 +57,7 @@ class Game:
     def render_frame(self) -> None:
        self.__puma.draw(self.__screen)
        self.__crosshair.draw(self.__screen)
+       self.__platform.draw(self.__screen)
        for enemy in self.__enemies:
            enemy.draw(self.__screen)
        for bullet in self.__bullets:

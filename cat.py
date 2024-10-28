@@ -8,7 +8,7 @@ class Cat:
         self.__HEIGHT = 48
         self.__SPEED = 500
         self.__GRAVITY = 9.8
-        self.__LAUNCH_SPEED = 4
+        self.__LAUNCH_SPEED = 5.5
         self.__hp = self.__MAX_HP
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
