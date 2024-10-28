@@ -6,7 +6,7 @@ class Enemy:
     def __init__(self, screen_rect: pygame.Rect) -> None:
         self.__WIDTH = 20
         self.__HEIGHT = 40
-        self.__SPEED = 300
+        self.__SPEED = 500
         self.__GRAVITY = 9.8
         self.__screen_rect = screen_rect
         self.__rect = pygame.Rect((0, 0), (self.__WIDTH, self.__HEIGHT))

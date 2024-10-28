@@ -9,7 +9,7 @@ FPS = 60
 
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
-        self.__SPAWN_TIME = 2
+        self.__SPAWN_TIME = 1
         self.__clock = pygame.time.Clock()
         self.__cur_time = 0.0
         self.__screen = screen

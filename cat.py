@@ -41,7 +41,16 @@ class Cat:
         self.__fall(dt)
         # self.__jump(screen_rect, platforms, dt)
         self.__lockToGround(screen_rect, platforms)
-        self.__rect.clamp_ip(screen_rect)
+
+        # Wrap around the screen.
+        if self.__rect.right <= screen_rect.left:
+            self.__rect.left = screen_rect.right
+        elif self.__rect.left >= screen_rect.right:
+            self.__rect.right = screen_rect.left
+
+        # Clamp at top.
+        if self.__rect.top <= screen_rect.top:
+            self.__rect.top = screen_rect.top
     
     def draw(self, screen: pygame.Surface) -> None:
         pygame.draw.rect(screen, "yellow", self.__rect)
