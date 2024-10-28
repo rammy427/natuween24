@@ -20,6 +20,10 @@ class Game:
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()
+        self.__gameIsOver = False
+        self.__score = 0
+        self.__top_score = 0
+        self.loadTopScore()
 
         # Add 5 platforms.
         width = 400
@@ -42,9 +46,11 @@ class Game:
     def update_frame(self) -> None:
         # Calculate delta time in milliseconds.
         dt = self.__clock.tick(FPS) / 1000
-        gameIsOver = not self.__puma.isAlive()
+        
+        if not self.__puma.isAlive():
+            self.endGame()
 
-        if not gameIsOver:
+        if not self.__gameIsOver:
             self.__cur_time += dt
             if (self.__cur_time >= self.__SPAWN_TIME):
                 # Spawn a new enemy.
@@ -95,8 +101,31 @@ class Game:
                     # Process enemy damage.
                     enemy.takeDamage()
                     if not enemy.isAlive():
+                        self.__score += 1
+                        print("Score: %s." % self.__score)
+                        print("Top Score: %s." % self.__top_score)
                         marked_enemies.add(enemy)
         
         # Remove the marked bullets and enemies from the original set.
         self.__bullets -= marked_bullets
         self.__enemies -= marked_enemies
+
+    def saveTopScore(self) -> None:
+        if self.__score > self.__top_score:
+            # Set top score to the new score.
+            self.__top_score = self.__score
+            # Write into a new or existing file.
+            with open("score.txt", 'w') as file:
+                file.write(str(self.__top_score))
+
+    def loadTopScore(self) -> None:
+        try:
+            with open("score.txt") as file:
+                self.__top_score = int(file.read())
+        except IOError:
+            print("File not found. Setting score to 0.")
+            self.__top_score = 0
+    
+    def endGame(self) -> None:
+        self.__gameIsOver = True
+        self.saveTopScore()
