@@ -67,6 +67,10 @@ class Cat:
             self.__fall_speed += self.__GRAVITY * dt
             self.__rect.move_ip(0, self.__fall_speed)
 
+    def jump(self):
+        self.__rect.move_ip(0, -1)
+        self.__fall_speed -= self.__LAUNCH_SPEED
+
     # def __jump(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
     #     if self.__is_jumping:
     #         self.__cur_jump_time += dt

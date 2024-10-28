@@ -33,6 +33,8 @@ while running:
                 locked = not locked
                 pygame.event.set_grab(locked)
                 pygame.mouse.set_visible(not locked)
+            elif event.key == pygame.K_w:
+                game.doCatJump()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             game.spawn_bullet()
 

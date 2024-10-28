@@ -71,6 +71,9 @@ class Game:
         dir = pygame.Vector2.normalize(crosshair_pos - puma_pos)
         self.__bullets.add(b.Bullet(puma_pos, dir))
 
+    def doCatJump(self) -> None:
+        self.__puma.jump()
+
     def doBulletEnemyCollisions(self) -> None:
         marked_bullets: set[b.Bullet] = set()
         marked_enemies: set[b.Enemy] = set()
