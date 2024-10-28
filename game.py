@@ -15,7 +15,8 @@ class Game:
         self.__screen = screen
         self.__screen_rect = screen_rect
         self.__crosshair = c.Crosshair()
-        self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
+        self.__puma = ct.Cat((screen_rect.centerx, 50))
+        # self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()

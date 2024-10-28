@@ -13,8 +13,9 @@ class Cat:
         self.__hp = self.__MAX_HP
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
-        self.__is_jumping = False
-        self.__cur_jump_time = 0
+        # self.__is_jumping = False
+        # self.__cur_jump_time = 0
+        self.__fall_speed = 0
         self.__is_invincible = False
         self.__cur_god_time = 0
 
@@ -34,10 +35,11 @@ class Cat:
                 self.__cur_god_time = 0
         
         # Cat can only jump if it isn't midair.
-        if keys[pygame.K_w] and not self.__is_jumping:
-            self.__is_jumping = True
+        # if keys[pygame.K_w] and not self.__is_jumping:
+        #     self.__is_jumping = True
         
-        self.__jump(screen_rect, platforms, dt)
+        self.__fall(screen_rect, platforms, dt)
+        # self.__jump(screen_rect, platforms, dt)
         self.__rect.clamp_ip(screen_rect)
     
     def draw(self, screen: pygame.Surface) -> None:
@@ -58,18 +60,25 @@ class Cat:
     def isAlive(self) -> bool:
         return self.__hp > 0
     
-    def __jump(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
-        if self.__is_jumping:
-            self.__cur_jump_time += dt
-            v = self.__LAUNCH_SPEED - self.__GRAVITY * self.__cur_jump_time
-            self.__rect.move_ip(0, -v)
-            if self.__hasHitGround(screen_rect, platforms):
-                # Move back a unit of v so we don't go out of bounds.
-                self.__rect.move_ip(0, v)
-                self.__cur_jump_time = 0
-                self.__is_jumping = False
+    def __fall(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
+        if self.__isOnGround(screen_rect, platforms):
+            self.__fall_speed = 0
+        else:
+            self.__fall_speed += self.__GRAVITY * dt
+            self.__rect.move_ip(0, self.__fall_speed)
 
-    def __hasHitGround(self, screen_rect: pygame.Rect, platforms: set[p.Platform]) -> bool:
+    # def __jump(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
+    #     if self.__is_jumping:
+    #         self.__cur_jump_time += dt
+    #         v = self.__LAUNCH_SPEED - self.__GRAVITY * self.__cur_jump_time
+    #         self.__rect.move_ip(0, -v)
+    #         if self.__isOnGround(screen_rect, platforms):
+    #             # Move back a unit of v so we don't go out of bounds.
+    #             self.__rect.move_ip(0, v)
+    #             self.__cur_jump_time = 0
+    #             self.__is_jumping = False
+
+    def __isOnGround(self, screen_rect: pygame.Rect, platforms: set[p.Platform]) -> bool:
         if self.__rect.bottom >= screen_rect.bottom:
             return True
         for platform in platforms:
