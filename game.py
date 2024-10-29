@@ -66,13 +66,17 @@ class Game:
             # Update the entities' transformations.
             self.__crosshair.update(self.__screen_rect)
             self.__puma.update(self.__screen_rect, self.__platforms, dt)
+            marked_bullets: set[b.Bullet] = set()
             for bullet in self.__bullets:
                 bullet.update(dt)
+                if self.bulletIsDying(bullet):
+                    marked_bullets.add(bullet)
             for enemy in self.__enemies:
                 if enemy.getRect().colliderect(self.__puma.getRect()):
                     self.__puma.takeDamage()
                 enemy.update(self.__screen_rect, self.__platforms, dt)
             
+            self.__bullets -= marked_bullets
             self.doBulletEnemyCollisions()
 
     def render_frame(self) -> None:
@@ -116,6 +120,14 @@ class Game:
         # Remove the marked bullets and enemies from the original set.
         self.__bullets -= marked_bullets
         self.__enemies -= marked_enemies
+
+    def bulletIsDying(self, bullet: b.Bullet) -> bool:
+        # Check if bullet hits any platform.
+        for platform in self.__platforms:
+            if bullet.getRect().colliderect(platform.getRect()):
+                return True
+        # If it hits no platforms, check if it goes out of bounds.
+        return not self.__screen_rect.contains(bullet.getRect())
 
     def saveTopScore(self) -> None:
         if self.__score > self.__top_score:
