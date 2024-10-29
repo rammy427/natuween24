@@ -7,7 +7,9 @@ class Enemy:
         self.__MAX_HP = 3
         self.__WIDTH = 20
         self.__HEIGHT = 40
-        self.__SPEED = 500
+        MIN_SPEED = 100
+        MAX_SPEED = 1000
+        self.__SPEED = random.randint(MIN_SPEED, MAX_SPEED)
         self.__GRAVITY = 9.8
         self.__hp = self.__MAX_HP
         self.__screen_rect = screen_rect
@@ -17,13 +19,13 @@ class Enemy:
 
         # Randomly choose position and direction.
         head_right = random.choice([True, False])
+        bottom = random.choice([screen_rect.top + 100, screen_rect.bottom - 100])
         if head_right:
             self.__x_dir = 1
-            # self.__rect.bottomright = screen_rect.bottomleft
+            self.__rect.bottomright = (screen_rect.left, bottom)
         else:
             self.__x_dir = -1
-            # self.__rect.bottomleft = screen_rect.bottomright
-        self.__rect.center = (random.randint(0, screen_rect.width), random.randint(0, screen_rect.height))
+            self.__rect.bottomleft = (screen_rect.right, bottom)
 
     def update(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
         self.__rect.move_ip(self.__x_dir * self.__SPEED * dt, 0)
