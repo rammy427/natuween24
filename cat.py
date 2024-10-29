@@ -73,6 +73,9 @@ class Cat:
     def isAlive(self) -> bool:
         return self.__hp > 0
     
+    def isInvincible(self) -> bool:
+        return self.__is_invincible
+    
     def jump(self):
         self.__rect.move_ip(0, -1)
         self.__fall_speed -= self.__LAUNCH_SPEED
