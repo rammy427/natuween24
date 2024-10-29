@@ -1,18 +1,20 @@
 import pygame
 import platforms as p
+import animation as a
 
 class Cat:
     def __init__(self, center: pygame.Vector2) -> None:
         self.__MAX_HP = 9
         self.__GOD_TIME = 3
-        self.__WIDTH = 96
-        self.__HEIGHT = 48
+        self.__WIDTH = 106
+        self.__HEIGHT = 71
         self.__SPEED = 500
         self.__GRAVITY = 9.8
         self.__LAUNCH_SPEED = 5.5
         self.__hp = self.__MAX_HP
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
+        self.__animation = a.Animation(self.__HEIGHT, 8, 0.5, "sprites/puma.png")
         # self.__is_jumping = False
         # self.__cur_jump_time = 0
         self.__fall_speed = 0
@@ -20,6 +22,8 @@ class Cat:
         self.__cur_god_time = 0
 
     def update(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
+        self.__animation.update(dt)
+
         # Process movement inputs.
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -53,7 +57,7 @@ class Cat:
             self.__rect.top = screen_rect.top
     
     def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.rect(screen, "yellow", self.__rect)
+        self.__animation.draw(self.__rect, screen)
 
     def getPos(self) -> pygame.Vector2:
         return self.__rect.center
