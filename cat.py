@@ -61,6 +61,9 @@ class Cat:
     def getRect(self) -> pygame.Rect:
         return self.__rect
     
+    def getHP(self) -> int:
+        return self.__hp
+    
     def takeDamage(self) -> None:
         if not self.__is_invincible:
             self.__hp -= 1

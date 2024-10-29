@@ -4,6 +4,7 @@ import bullet as b
 import enemy as e
 import platforms as p
 import text as t
+import healthbar as h
 import pygame
 
 FPS = 60
@@ -22,6 +23,7 @@ class Game:
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()
+        self.__health_bar = h.HealthBar(self.__puma)
         self.__gameIsOver = False
         self.__score = 0
         self.__top_score = 0
@@ -48,6 +50,7 @@ class Game:
     def update_frame(self) -> None:
         # Calculate delta time in milliseconds.
         dt = self.__clock.tick(FPS) / 1000
+        self.__health_bar.update()
         
         if not self.__puma.isAlive():
             self.endGame()
@@ -82,6 +85,7 @@ class Game:
        for bullet in self.__bullets:
            bullet.draw(self.__screen)
        self.__text_manager.drawScore(self.__score, self.__top_score, self.__screen)
+       self.__health_bar.draw(self.__screen)
 
     def spawn_bullet(self) -> None:
         puma_pos = pygame.Vector2(self.__puma.getPos())
