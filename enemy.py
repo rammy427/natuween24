@@ -1,20 +1,27 @@
 import pygame
 import random
+from enum import Enum
 import platforms as p
+import animation as a
+
+class Animations(Enum):
+    FlyingLeft = 0
+    FlyingRight = 1
+    Count = 2
 
 class Enemy:
     def __init__(self, screen_rect: pygame.Rect) -> None:
         self.__MAX_HP = 3
-        self.__WIDTH = 20
-        self.__HEIGHT = 40
+        self.__WIDTH = 70
+        self.__HEIGHT = 70
         MIN_SPEED = 100
         MAX_SPEED = 1000
         self.__SPEED = random.randint(MIN_SPEED, MAX_SPEED)
         self.__GRAVITY = 9.8
         self.__hp = self.__MAX_HP
         self.__screen_rect = screen_rect
-        self.__rect = pygame.Rect((0, 0), (self.__WIDTH, self.__HEIGHT))
-        self.__color = pygame.Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
+        self.__animation = a.Animation(self.__HEIGHT, 3, 0.125, "sprites/enemy.png")
         self.__fall_speed = 0
 
         # Randomly choose position and direction.
@@ -22,9 +29,11 @@ class Enemy:
         bottom = random.choice([screen_rect.top + 100, screen_rect.bottom - 100])
         if head_right:
             self.__x_dir = 1
+            self.__cur_anim = Animations.FlyingRight
             self.__rect.bottomright = (screen_rect.left, bottom)
         else:
             self.__x_dir = -1
+            self.__cur_anim = Animations.FlyingLeft
             self.__rect.bottomleft = (screen_rect.right, bottom)
 
     def update(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
@@ -38,9 +47,12 @@ class Enemy:
             self.__rect.left = self.__screen_rect.right
         elif self.__rect.left >= self.__screen_rect.right:
             self.__rect.right = self.__screen_rect.left
+
+        # Update animation.
+        self.__animation.update(self.__cur_anim.value, dt)
     
     def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.rect(screen, self.__color, self.__rect)
+        self.__animation.draw(self.__rect, screen)
     
     def takeDamage(self) -> None:
         self.__hp -= 1
