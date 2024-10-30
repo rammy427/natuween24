@@ -11,12 +11,13 @@ class Animation:
         self.__cur_time = 0.0
         self.__cur_frame = 0
 
-    def update(self, dt: float) -> None:
+    def update(self, state: int, dt: float) -> None:
         self.__cur_time += dt
         if (self.__cur_time >= self.__FRAME_TIME):
             self.__cur_frame = (self.__cur_frame + 1) % self.__N_FRAMES
             new_x = self.__cur_frame * self.__FRAME_WIDTH
-            self.__crop_rect.left = new_x
+            new_y = state * self.__FRAME_HEIGHT
+            self.__crop_rect.topleft = (new_x, new_y)
             self.__cur_time = 0.0
 
     def draw(self, rect: pygame.Rect, screen: pygame.Surface) -> None:
