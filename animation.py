@@ -11,7 +11,7 @@ class Animation:
         self.__cur_time = 0.0
         self.__cur_frame = 0
 
-    def update(self, state: int, dt: float) -> None:
+    def update(self, dt: float, state = 0) -> None:
         self.__cur_time += dt
         if (self.__cur_time >= self.__FRAME_TIME):
             self.__cur_frame = (self.__cur_frame + 1) % self.__N_FRAMES

@@ -73,7 +73,7 @@ class Cat:
             self.__rect.top = screen_rect.top
         
         # Update animation with current state.
-        self.__animation.update(self.__cur_anim.value, dt)
+        self.__animation.update(dt, self.__cur_anim.value)
         if self.__is_jumping:
             if self.__last_dir == -1:
                 self.__cur_anim = Animations.JumpingLeft
@@ -117,17 +117,6 @@ class Cat:
     def __fall(self, dt: float) -> None:
         self.__fall_speed += self.__GRAVITY * dt
         self.__rect.move_ip(0, self.__fall_speed)
-
-    # def __jump(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
-    #     if self.__is_jumping:
-    #         self.__cur_jump_time += dt
-    #         v = self.__LAUNCH_SPEED - self.__GRAVITY * self.__cur_jump_time
-    #         self.__rect.move_ip(0, -v)
-    #         if self.__isOnGround(screen_rect, platforms):
-    #             # Move back a unit of v so we don't go out of bounds.
-    #             self.__rect.move_ip(0, v)
-    #             self.__cur_jump_time = 0
-    #             self.__is_jumping = False
 
     def __lockToGround(self, screen_rect: pygame.Rect, platforms: set[p.Platform]) -> None:
         if self.__rect.bottom >= screen_rect.bottom:

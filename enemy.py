@@ -73,7 +73,7 @@ class Enemy:
             self.__rect.right = self.__screen_rect.left
 
         # Update animation.
-        self.__animation.update(self.__cur_anim.value, dt)
+        self.__animation.update(dt, self.__cur_anim.value)
     
     def draw(self, screen: pygame.Surface) -> None:
         self.__animation.draw(self.__rect, screen)
