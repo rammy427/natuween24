@@ -19,7 +19,6 @@ class Game:
         self.__text_manager = t.TextManager(screen_rect)
         self.__crosshair = c.Crosshair()
         self.__puma = ct.Cat((screen_rect.centerx, 50))
-        # self.__puma = ct.Cat((screen_rect.centerx, screen_rect.bottom))
         self.__bullets: set[b.Bullet] = set()
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()
@@ -77,6 +76,11 @@ class Game:
             
             self.__bullets -= marked_bullets
             self.doBulletEnemyCollisions()
+        else:
+            # If game ended and player presses Enter, the game restarts.
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_RETURN]:
+                self.resetGame()
 
     def render_frame(self) -> None:
        self.__puma.draw(self.__screen)
@@ -91,10 +95,11 @@ class Game:
        self.__health_bar.draw(self.__screen)
 
     def spawn_bullet(self) -> None:
-        puma_pos = pygame.Vector2(self.__puma.getPos())
-        crosshair_pos = pygame.Vector2(self.__crosshair.getPos())
-        dir = pygame.Vector2.normalize(crosshair_pos - puma_pos)
-        self.__bullets.add(b.Bullet(puma_pos, dir))
+        if not self.__gameIsOver:
+            puma_pos = pygame.Vector2(self.__puma.getPos())
+            crosshair_pos = pygame.Vector2(self.__crosshair.getPos())
+            dir = pygame.Vector2.normalize(crosshair_pos - puma_pos)
+            self.__bullets.add(b.Bullet(puma_pos, dir))
 
     def doCatJump(self) -> None:
         self.__puma.jump()
@@ -143,6 +148,15 @@ class Game:
         except IOError:
             print("File not found. Setting score to 0.")
             self.__top_score = 0
+
+    def resetGame(self) -> None:
+        self.__bullets.clear()
+        self.__enemies.clear()
+        self.__puma = ct.Cat((self.__screen_rect.centerx, 50))
+        self.__health_bar = h.HealthBar(self.__puma)
+        self.__cur_time = 0.0
+        self.__score = 0
+        self.__gameIsOver = False
     
     def endGame(self) -> None:
         self.__gameIsOver = True
