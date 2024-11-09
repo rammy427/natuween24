@@ -30,14 +30,13 @@ class Game:
         self.loadTopScore()
 
         # Add 5 platforms.
-        width = 400
-        half_width = width // 2
+        half_width = 200
         vertical = 100
-        self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.top + vertical), width))
-        self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.bottom - vertical), width))
-        self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.top + vertical), width))
-        self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.bottom - vertical), width))
-        self.__platforms.add(p.Platform(screen_rect.center, width))
+        self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.top + vertical)))
+        self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.bottom - vertical)))
+        self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.top + vertical)))
+        self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.bottom - vertical)))
+        self.__platforms.add(p.Platform(screen_rect.center))
 
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
