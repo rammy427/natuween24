@@ -1,3 +1,4 @@
+import animation as a
 import pygame
 
 class Bullet:
@@ -9,12 +10,14 @@ class Bullet:
         self.__DIR = dir
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
+        self.__animation = a.Animation(self.__HEIGHT, 4, 0.03125, "sprites/laser.png")
     
     def update(self, dt: float) -> None:
         self.__rect.move_ip(self.__DIR * self.__SPEED * dt)
+        self.__animation.update(dt)
     
     def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.rect(screen, "green", self.__rect)
+        self.__animation.draw(self.__rect, screen)
     
     def getRect(self) -> pygame.Rect:
         return self.__rect
