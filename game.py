@@ -72,7 +72,7 @@ class Game:
             for enemy in self.__enemies:
                 if enemy.getRect().colliderect(self.__puma.getRect()):
                     self.__puma.takeDamage()
-                enemy.update(self.__screen_rect, self.__platforms, dt)
+                enemy.update(self.__screen_rect, self.__puma.getPos(), self.__platforms, dt)
             
             self.__bullets -= marked_bullets
             self.doBulletEnemyCollisions()
