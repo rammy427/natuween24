@@ -30,6 +30,7 @@ class Game:
         self.__gameIsOver = False
         self.__score = 0
         self.__top_score = 0
+        self.__bg_sprite = pygame.image.load("sprites/bg.png")
         self.loadTopScore()
 
         # Add 5 platforms.
@@ -88,6 +89,7 @@ class Game:
                 self.resetGame()
 
     def render_frame(self) -> None:
+       self.__screen.blit(self.__bg_sprite, self.__screen_rect)
        self.__puma.draw(self.__screen)
        self.__crosshair.draw(self.__screen)
        for platform in self.__platforms:
