@@ -34,7 +34,7 @@ class Game:
 
         # Add 5 platforms.
         half_width = 200
-        vertical = 100
+        vertical = 150
         self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.top + vertical)))
         self.__platforms.add(p.Platform((screen_rect.left + half_width, screen_rect.bottom - vertical)))
         self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.top + vertical)))
