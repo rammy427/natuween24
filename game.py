@@ -32,6 +32,7 @@ class Game:
         self.__score = 0
         self.__top_score = 0
         self.__bg_sprite = pygame.image.load("sprites/bg.png")
+        self.__gameover_sprite = pygame.image.load("sprites/gameover.png")
         self.loadTopScore()
 
         # Add 5 platforms.
@@ -101,21 +102,24 @@ class Game:
                 self.resetGame()
 
     def render_frame(self) -> None:
-       self.__screen.blit(self.__bg_sprite, self.__screen_rect)
+       if self.__gameIsOver:
+          self.__screen.blit(self.__gameover_sprite, self.__screen_rect)
+       else:
+          self.__screen.blit(self.__bg_sprite, self.__screen_rect)
+          for rect in self.__snow_rects:
+            self.__snowfall_anim.draw(rect, self.__screen)
+            self.__puma.draw(self.__screen)
+            self.__crosshair.draw(self.__screen)
+            for enemy in self.__enemies:
+                enemy.draw(self.__screen)
+            for bullet in self.__bullets:
+                bullet.draw(self.__screen)
+            self.__health_bar.draw(self.__screen)
 
-       for rect in self.__snow_rects:
-           self.__snowfall_anim.draw(rect, self.__screen)
-
-       self.__puma.draw(self.__screen)
-       self.__crosshair.draw(self.__screen)
        for platform in self.__platforms:
            platform.draw(self.__screen)
-       for enemy in self.__enemies:
-           enemy.draw(self.__screen)
-       for bullet in self.__bullets:
-           bullet.draw(self.__screen)
+       
        self.__text_manager.drawScore(self.__score, self.__top_score, self.__screen)
-       self.__health_bar.draw(self.__screen)
 
     def spawn_bullet(self) -> None:
         if not self.__gameIsOver:
