@@ -19,8 +19,8 @@ class Cat:
         self.__WIDTH = 106
         self.__HEIGHT = 71
         self.__SPEED = 500
-        self.__GRAVITY = 12
-        self.__LAUNCH_SPEED = 6
+        self.__GRAVITY = 15
+        self.__LAUNCH_SPEED = 8
         self.__hp = self.__MAX_HP
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
@@ -107,7 +107,7 @@ class Cat:
     
     def jump(self):
         self.__rect.move_ip(0, -1)
-        self.__fall_speed -= self.__LAUNCH_SPEED
+        self.__fall_speed = -self.__LAUNCH_SPEED
         self.__is_jumping = True
     
     def __fall(self, dt: float) -> None:
@@ -120,7 +120,7 @@ class Cat:
             self.__fall_speed = 0
             self.__is_jumping = False
         for platform in platforms:
-            if self.__rect.colliderect(platform.getRect()):
+            if self.__rect.colliderect(platform.getRect()) and self.__fall_speed > 0:
                 self.__rect.bottom = platform.getRect().top
                 self.__fall_speed = 0
                 self.__is_jumping = False
