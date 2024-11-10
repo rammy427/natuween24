@@ -5,6 +5,7 @@ import enemy as e
 import platforms as p
 import text as t
 import healthbar as h
+import animation as a
 import pygame
 
 FPS = 60
@@ -42,6 +43,15 @@ class Game:
         self.__platforms.add(p.Platform((screen_rect.right - half_width, screen_rect.bottom - vertical)))
         self.__platforms.add(p.Platform(screen_rect.center))
 
+        # Create snowfall animation and extend across screen.
+        sprite_width = 600
+        sprite_height = 600
+        self.__snowfall_anim = a.Animation(600, 3, 0.25, "sprites/snowfall.png")
+        self.__snow_rects: list[pygame.Rect] = []
+        for y in range(screen_rect.top, screen_rect.bottom, sprite_height):
+            for x in range(screen_rect.left, screen_rect.right, sprite_width):
+                self.__snow_rects.append(pygame.Rect(x, y, sprite_width, sprite_height))
+
     def run(self) -> None:
         # Fill the screen with color to clear previous frame.
         self.__screen.fill("black")
@@ -59,6 +69,8 @@ class Game:
             self.endGame()
 
         if not self.__gameIsOver:
+            self.__snowfall_anim.update(dt)
+
             self.__cur_spawn_time += dt
             if (self.__cur_spawn_time >= self.__SPAWN_TIME):
                 # Spawn a new enemy.
@@ -90,6 +102,10 @@ class Game:
 
     def render_frame(self) -> None:
        self.__screen.blit(self.__bg_sprite, self.__screen_rect)
+
+       for rect in self.__snow_rects:
+           self.__snowfall_anim.draw(rect, self.__screen)
+
        self.__puma.draw(self.__screen)
        self.__crosshair.draw(self.__screen)
        for platform in self.__platforms:
