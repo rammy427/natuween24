@@ -45,9 +45,9 @@ class Game:
         self.__platforms.add(p.Platform(screen_rect.center))
 
         # Create snowfall animation and extend across screen.
-        sprite_width = 600
-        sprite_height = 600
-        self.__snowfall_anim = a.Animation(600, 3, 0.25, "sprites/snowfall.png")
+        sprite_width = screen_rect.width
+        sprite_height = 720
+        self.__snowfall_anim = a.Animation(sprite_height, 3, 0.25, "sprites/snowfall.png")
         self.__snow_rects: list[pygame.Rect] = []
         for y in range(screen_rect.top, screen_rect.bottom, sprite_height):
             for x in range(screen_rect.left, screen_rect.right, sprite_width):
