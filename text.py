@@ -2,7 +2,7 @@ import pygame
 
 class TextManager:
     def __init__(self, screen_rect: pygame.Rect) -> None:
-        self.font = pygame.font.Font(None, 48)
+        self.font = pygame.font.Font("fonts/coracat.ttf", 24)
         self.__screen_rect = screen_rect
 
     def drawScore(self, score: int, top_score: int, screen: pygame.Surface) -> None:
