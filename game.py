@@ -12,8 +12,12 @@ FPS = 60
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
         self.__SPAWN_TIME = 3
+        self.__JUMP_COOL_TIME = 2
         self.__clock = pygame.time.Clock()
-        self.__cur_time = 0.0
+        self.__cur_jump_cool_time = 0.0
+        self.__jump_counter = 0
+        self.__can_jump = True
+        self.__cur_spawn_time = 0.0
         self.__screen = screen
         self.__screen_rect = screen_rect
         self.__text_manager = t.TextManager(screen_rect)
@@ -54,16 +58,17 @@ class Game:
             self.endGame()
 
         if not self.__gameIsOver:
-            self.__cur_time += dt
-            if (self.__cur_time >= self.__SPAWN_TIME):
+            self.__cur_spawn_time += dt
+            if (self.__cur_spawn_time >= self.__SPAWN_TIME):
                 # Spawn a new enemy.
                 self.__enemies.add(e.Enemy(self.__screen_rect))
                 # Reset timer.
-                self.__cur_time = 0
+                self.__cur_spawn_time = 0
 
             # Update the entities' transformations.
             self.__crosshair.update(self.__screen_rect)
             self.__puma.update(self.__screen_rect, self.__platforms, dt)
+            self.updateJumpCooldown(dt)
             marked_bullets: set[b.Bullet] = set()
             for bullet in self.__bullets:
                 bullet.update(dt)
@@ -102,7 +107,20 @@ class Game:
             self.__bullets.add(b.Bullet(puma_pos, dir))
 
     def doCatJump(self) -> None:
-        self.__puma.jump()
+        if self.__can_jump:
+            self.__puma.jump()
+            self.__jump_counter += 1
+    
+    def updateJumpCooldown(self, dt: float) -> None:
+        if self.__can_jump:
+            if self.__jump_counter >= 3:
+                self.__can_jump = False
+        else:
+            self.__cur_jump_cool_time += dt
+            if self.__cur_jump_cool_time >= self.__JUMP_COOL_TIME:
+                self.__cur_jump_cool_time = 0.0
+                self.__jump_counter = 0
+                self.__can_jump = True
 
     def doBulletEnemyCollisions(self) -> None:
         marked_bullets: set[b.Bullet] = set()
@@ -154,7 +172,7 @@ class Game:
         self.__enemies.clear()
         self.__puma = ct.Cat((self.__screen_rect.centerx, 50))
         self.__health_bar = h.HealthBar(self.__puma)
-        self.__cur_time = 0.0
+        self.__cur_spawn_time = 0.0
         self.__score = 0
         self.__gameIsOver = False
     

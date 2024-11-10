@@ -20,7 +20,7 @@ class Cat:
         self.__HEIGHT = 71
         self.__SPEED = 500
         self.__GRAVITY = 12
-        self.__LAUNCH_SPEED = 8
+        self.__LAUNCH_SPEED = 6
         self.__hp = self.__MAX_HP
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__rect.center = center
@@ -53,10 +53,6 @@ class Cat:
             if self.__cur_god_time >= self.__GOD_TIME:
                 self.__is_invincible = False
                 self.__cur_god_time = 0
-        
-        # Cat can only jump if it isn't midair.
-        # if keys[pygame.K_w] and not self.__is_jumping:
-        #     self.__is_jumping = True
         
         self.__fall(dt)
         # self.__jump(screen_rect, platforms, dt)
