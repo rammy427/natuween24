@@ -40,10 +40,19 @@ class Game:
         self.__state = States.Playing
         self.__score = 0
         self.__top_score = 0
+        self.loadTopScore()
+        # Sprite stuff.
         self.__bg_sprite = pygame.image.load("sprites/bg.png")
         self.__gameover_sprite = pygame.image.load("sprites/gameover.png")
         self.__snowcat = s.Snowcat(screen_rect)
-        self.loadTopScore()
+        # Sounds!
+        self.__snd_bullet = pygame.mixer.Sound("sounds/puma_laser.ogg")
+        self.__snd_jump = pygame.mixer.Sound("sounds/puma_jump.ogg")
+        self.__snd_dmg = pygame.mixer.Sound("sounds/puma_dmg1.ogg")
+        self.__snd_enemy_hit = pygame.mixer.Sound("sounds/enemy_defeat.ogg")
+        self.__snd_game_over = pygame.mixer.Sound("sounds/puma_dmg2.ogg")
+        pygame.mixer_music.load("sounds/bgm.ogg")
+        pygame.mixer_music.play(-1)
 
         # Add 5 platforms.
         half_width = 200
@@ -75,11 +84,11 @@ class Game:
         # Calculate delta time in milliseconds.
         dt = self.__clock.tick(FPS) / 1000
         self.__health_bar.update()
-        
-        if not self.__puma.isAlive():
-            self.endGame()
 
         if self.__state == States.Playing:
+            if not self.__puma.isAlive():
+                self.endGame()
+
             self.__snowfall_anim.update(dt)
             self.__snowcat.update(dt)
 
@@ -101,7 +110,7 @@ class Game:
                     marked_bullets.add(bullet)
             for enemy in self.__enemies:
                 if enemy.getRect().colliderect(self.__puma.getRect()):
-                    self.__puma.takeDamage()
+                    self.__puma.takeDamage(self.__snd_dmg)
                 enemy.update(self.__screen_rect, self.__puma.getPos(), self.__platforms, dt)
             
             self.__bullets -= marked_bullets
@@ -142,11 +151,13 @@ class Game:
             crosshair_pos = pygame.Vector2(self.__crosshair.getPos())
             dir = pygame.Vector2.normalize(crosshair_pos - puma_pos)
             self.__bullets.add(b.Bullet(puma_pos, dir))
+            pygame.mixer.Sound.play(self.__snd_bullet)
 
     def doCatJump(self) -> None:
         if self.__can_jump:
             self.__puma.jump()
             self.__jump_counter += 1
+            pygame.mixer.Sound.play(self.__snd_jump)
     
     def updateJumpCooldown(self, dt: float) -> None:
         if self.__can_jump:
@@ -170,6 +181,7 @@ class Game:
                     marked_bullets.add(bullet)
                     # Process enemy damage.
                     enemy.takeDamage()
+                    pygame.mixer.Sound.play(self.__snd_enemy_hit)
                     if not enemy.isAlive():
                         self.increaseScore()
                         # print("Score: %s." % self.__score)
@@ -222,6 +234,7 @@ class Game:
     def endGame(self) -> None:
         self.__state = States.GameOver
         self.saveTopScore()
+        pygame.mixer.Sound.play(self.__snd_game_over)
 
     def hasQuit(self) -> bool:
         return self.__state == States.Quit

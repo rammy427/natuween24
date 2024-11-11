@@ -93,10 +93,11 @@ class Cat:
     def getHP(self) -> int:
         return self.__hp
     
-    def takeDamage(self) -> None:
+    def takeDamage(self, snd: pygame.mixer.Sound) -> None:
         if not self.__is_invincible:
             self.__hp -= 1
             self.__is_invincible = True
+            pygame.mixer.Sound.play(snd)
             # print("Life: %s." % self.__hp)
 
     def isAlive(self) -> bool:
