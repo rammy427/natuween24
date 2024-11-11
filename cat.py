@@ -105,7 +105,7 @@ class Cat:
     def isInvincible(self) -> bool:
         return self.__is_invincible
     
-    def jump(self):
+    def jump(self) -> None:
         self.__rect.move_ip(0, -1)
         self.__fall_speed = -self.__LAUNCH_SPEED
         self.__is_jumping = True
