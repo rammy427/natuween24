@@ -24,8 +24,14 @@ class TextManager:
         text_rect.center = self.__screen_rect.center
         screen.blit(text, text_rect)
 
-        prompt = self.small_font.render("Press ENTER to retry", True, "white")
-        prompt_rect = prompt.get_rect()
-        prompt_rect.centerx = self.__screen_rect.centerx
-        prompt_rect.top = text_rect.bottom
-        screen.blit(prompt, prompt_rect)
+        retry_prompt = self.small_font.render("ENTER: Retry", True, "white")
+        retry_prompt_rect = retry_prompt.get_rect()
+        # retry_prompt_rect.centerx = self.__screen_rect.centerx
+        # retry_prompt_rect.top = text_rect.bottom
+        retry_prompt_rect.midtop = (self.__screen_rect.centerx, text_rect.bottom)
+        screen.blit(retry_prompt, retry_prompt_rect)
+
+        quit_prompt = self.small_font.render("ESC: Quit", True, "white")
+        quit_prompt_rect = quit_prompt.get_rect()
+        quit_prompt_rect.midtop = (self.__screen_rect.centerx, retry_prompt_rect.bottom)
+        screen.blit(quit_prompt, quit_prompt_rect)
