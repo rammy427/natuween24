@@ -97,7 +97,7 @@ class Cat:
         if not self.__is_invincible:
             self.__hp -= 1
             self.__is_invincible = True
-            print("Life: %s." % self.__hp)
+            # print("Life: %s." % self.__hp)
 
     def isAlive(self) -> bool:
         return self.__hp > 0

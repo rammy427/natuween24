@@ -80,7 +80,7 @@ class Enemy:
     
     def takeDamage(self) -> None:
         self.__hp -= 1
-        print("Enemy life: %s." % self.__hp)
+        # print("Enemy life: %s." % self.__hp)
 
     def isAlive(self) -> bool:
         return self.__hp > 0

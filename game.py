@@ -104,6 +104,7 @@ class Game:
             
             self.__bullets -= marked_bullets
             self.doBulletEnemyCollisions()
+            # print("Bullets: %s" % len(self.__bullets))
         else:
             # If game ended and player presses Enter, the game restarts.
             keys = pygame.key.get_pressed()
@@ -162,15 +163,15 @@ class Game:
         for bullet in self.__bullets:
             for enemy in self.__enemies:
                 if bullet.getRect().colliderect(enemy.getRect()):
-                    print("Collision detected!")
+                    # print("Collision detected!")
                     # Mark the bullet to destroy it.
                     marked_bullets.add(bullet)
                     # Process enemy damage.
                     enemy.takeDamage()
                     if not enemy.isAlive():
                         self.__score += 1
-                        print("Score: %s." % self.__score)
-                        print("Top Score: %s." % self.__top_score)
+                        # print("Score: %s." % self.__score)
+                        # print("Top Score: %s." % self.__top_score)
                         marked_enemies.add(enemy)
         
         # Remove the marked bullets and enemies from the original set.
@@ -198,7 +199,7 @@ class Game:
             with open("score.txt") as file:
                 self.__top_score = int(file.read())
         except IOError:
-            print("File not found. Setting score to 0.")
+            # print("File not found. Setting score to 0.")
             self.__top_score = 0
 
     def resetGame(self) -> None:

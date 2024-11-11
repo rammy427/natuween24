@@ -30,8 +30,8 @@ class Snowcat:
         y = -self.__HEIGHT // 2
         self.__rect.center = pygame.Vector2(x, y)
         self.__cur_time = 0.0
-        print("Index: %s" % index)
-        print("Position: (%s, %s)" % (x, y))
+        # print("Index: %s" % index)
+        # print("Position: (%s, %s)" % (x, y))
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.__sprite, self.__rect, self.__clip_rect)
