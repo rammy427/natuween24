@@ -51,8 +51,8 @@ class Game:
         self.__snd_dmg = pygame.mixer.Sound("sounds/puma_dmg1.ogg")
         self.__snd_enemy_hit = pygame.mixer.Sound("sounds/enemy_defeat.ogg")
         self.__snd_game_over = pygame.mixer.Sound("sounds/puma_dmg2.ogg")
-        pygame.mixer_music.load("sounds/bgm.ogg")
-        pygame.mixer_music.play(-1)
+        pygame.mixer.music.load("sounds/bgm.ogg")
+        pygame.mixer.music.play(-1)
 
         # Add 5 platforms.
         half_width = 200
