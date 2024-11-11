@@ -11,13 +11,11 @@ class Animations(Enum):
 
 class Enemy:
     def __init__(self, screen_rect: pygame.Rect) -> None:
-        self.__MAX_HP = 3
         self.__WIDTH = 70
         self.__HEIGHT = 70
         MIN_SPEED = 100
         MAX_SPEED = 1000
         self.__GRAVITY = 9.8
-        self.__hp = self.__MAX_HP
         self.__screen_rect = screen_rect
         self.__rect = pygame.Rect(0, 0, self.__WIDTH, self.__HEIGHT)
         self.__fall_speed = 0
@@ -25,6 +23,8 @@ class Enemy:
         # Randomly choose enemy type (following the player or wandering aimlessly).
         self.__is_homing = random.choice([True, False])
         filename = "sprites/%s.png" % ("strong_enemy" if self.__is_homing else "enemy")
+        self.__MAX_HP = 3 if self.__is_homing else 1
+        self.__hp = self.__MAX_HP
         self.__animation = a.Animation(self.__HEIGHT, 3, 0.125, filename)
 
         # Randomly choose starting position.

@@ -15,11 +15,13 @@ FPS = 60
 class States(Enum):
     Playing = 0
     GameOver = 1
-    Quit = 2    
+    Quit = 2
 
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
-        self.__SPAWN_TIME = 3
+        self.__MIN_SPAWN_TIME = 0.15
+        self.__MAX_SPAWN_TIME = 3
+        self.__SPAWN_TIME = self.__MAX_SPAWN_TIME
         self.__JUMP_COOL_TIME = 1.5
         self.__clock = pygame.time.Clock()
         self.__cur_jump_cool_time = 0.0
@@ -169,7 +171,7 @@ class Game:
                     # Process enemy damage.
                     enemy.takeDamage()
                     if not enemy.isAlive():
-                        self.__score += 1
+                        self.increaseScore()
                         # print("Score: %s." % self.__score)
                         # print("Top Score: %s." % self.__top_score)
                         marked_enemies.add(enemy)
@@ -185,6 +187,10 @@ class Game:
                 return True
         # If it hits no platforms, check if it goes out of bounds.
         return not self.__screen_rect.contains(bullet.getRect())
+
+    def increaseScore(self) -> None:
+        self.__score += 1
+        self.__SPAWN_TIME = max(self.__MIN_SPAWN_TIME, self.__SPAWN_TIME - 0.05)
 
     def saveTopScore(self) -> None:
         if self.__score > self.__top_score:
@@ -208,6 +214,7 @@ class Game:
         self.__puma = ct.Cat((self.__screen_rect.centerx, 50))
         self.__health_bar = h.HealthBar(self.__puma)
         self.__cur_spawn_time = 0.0
+        self.__SPAWN_TIME = self.__MAX_SPAWN_TIME
         self.__score = 0
         self.__state = States.Playing
     
