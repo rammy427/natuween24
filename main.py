@@ -29,7 +29,7 @@ async def main():
     while running:
         # Poll for events. Iterate through every event in the queue.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or game.hasQuit():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

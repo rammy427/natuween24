@@ -1,3 +1,4 @@
+from enum import Enum
 import crosshair as c
 import cat as ct
 import bullet as b
@@ -9,6 +10,11 @@ import animation as a
 import pygame
 
 FPS = 60
+
+class States(Enum):
+    Playing = 0
+    GameOver = 1
+    Quit = 2    
 
 class Game:
     def __init__(self, screen: pygame.Surface, screen_rect: pygame.Rect) -> None:
@@ -28,7 +34,7 @@ class Game:
         self.__enemies: set[e.Enemy] = set()
         self.__platforms: set[p.Platform] = set()
         self.__health_bar = h.HealthBar(self.__puma)
-        self.__gameIsOver = False
+        self.__state = States.Playing
         self.__score = 0
         self.__top_score = 0
         self.__bg_sprite = pygame.image.load("sprites/bg.png")
@@ -69,7 +75,7 @@ class Game:
         if not self.__puma.isAlive():
             self.endGame()
 
-        if not self.__gameIsOver:
+        if self.__state == States.Playing:
             self.__snowfall_anim.update(dt)
 
             self.__cur_spawn_time += dt
@@ -100,9 +106,11 @@ class Game:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_RETURN]:
                 self.resetGame()
+            elif keys[pygame.K_ESCAPE]:
+                self.__state = States.Quit
 
     def render_frame(self) -> None:
-       if self.__gameIsOver:
+       if self.__state == States.GameOver:
           self.__screen.blit(self.__gameover_sprite, self.__screen_rect)
           self.__text_manager.drawGameOver(self.__screen)
        else:
@@ -122,7 +130,7 @@ class Game:
        self.__text_manager.drawScore(self.__score, self.__top_score, self.__screen)
 
     def spawn_bullet(self) -> None:
-        if not self.__gameIsOver:
+        if self.__state == States.Playing:
             puma_pos = pygame.Vector2(self.__puma.getPos())
             crosshair_pos = pygame.Vector2(self.__crosshair.getPos())
             dir = pygame.Vector2.normalize(crosshair_pos - puma_pos)
@@ -196,8 +204,11 @@ class Game:
         self.__health_bar = h.HealthBar(self.__puma)
         self.__cur_spawn_time = 0.0
         self.__score = 0
-        self.__gameIsOver = False
+        self.__state = States.Playing
     
     def endGame(self) -> None:
-        self.__gameIsOver = True
+        self.__state = States.GameOver
         self.saveTopScore()
+
+    def hasQuit(self) -> bool:
+        return self.__state == States.Quit
