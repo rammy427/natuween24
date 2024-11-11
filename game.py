@@ -7,6 +7,7 @@ import platforms as p
 import text as t
 import healthbar as h
 import animation as a
+import snowcat as s
 import pygame
 
 FPS = 60
@@ -39,6 +40,7 @@ class Game:
         self.__top_score = 0
         self.__bg_sprite = pygame.image.load("sprites/bg.png")
         self.__gameover_sprite = pygame.image.load("sprites/gameover.png")
+        self.__snowcat = s.Snowcat(screen_rect)
         self.loadTopScore()
 
         # Add 5 platforms.
@@ -77,6 +79,7 @@ class Game:
 
         if self.__state == States.Playing:
             self.__snowfall_anim.update(dt)
+            self.__snowcat.update(dt)
 
             self.__cur_spawn_time += dt
             if (self.__cur_spawn_time >= self.__SPAWN_TIME):
@@ -126,6 +129,7 @@ class Game:
             for bullet in self.__bullets:
                 bullet.draw(self.__screen)
             self.__health_bar.draw(self.__screen)
+            self.__snowcat.draw(self.__screen)
        
        self.__text_manager.drawScore(self.__score, self.__top_score, self.__screen)
 
