@@ -190,7 +190,8 @@ class Game:
 
     def increaseScore(self) -> None:
         self.__score += 1
-        self.__SPAWN_TIME = max(self.__MIN_SPAWN_TIME, self.__SPAWN_TIME - 0.05)
+        if self.__score % 5 == 0:
+            self.__SPAWN_TIME = max(self.__MIN_SPAWN_TIME, self.__SPAWN_TIME - 0.1)
 
     def saveTopScore(self) -> None:
         if self.__score > self.__top_score:
