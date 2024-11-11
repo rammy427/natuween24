@@ -104,20 +104,20 @@ class Game:
     def render_frame(self) -> None:
        if self.__gameIsOver:
           self.__screen.blit(self.__gameover_sprite, self.__screen_rect)
+          self.__text_manager.drawGameOver(self.__screen)
        else:
           self.__screen.blit(self.__bg_sprite, self.__screen_rect)
           for rect in self.__snow_rects:
             self.__snowfall_anim.draw(rect, self.__screen)
             self.__puma.draw(self.__screen)
+            for platform in self.__platforms:
+                platform.draw(self.__screen)
             self.__crosshair.draw(self.__screen)
             for enemy in self.__enemies:
                 enemy.draw(self.__screen)
             for bullet in self.__bullets:
                 bullet.draw(self.__screen)
             self.__health_bar.draw(self.__screen)
-
-       for platform in self.__platforms:
-           platform.draw(self.__screen)
        
        self.__text_manager.drawScore(self.__score, self.__top_score, self.__screen)
 
