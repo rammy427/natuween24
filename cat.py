@@ -36,12 +36,12 @@ class Cat:
     def update(self, screen_rect: pygame.Rect, platforms: set[p.Platform], dt: float) -> None:
         # Process movement inputs.
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] or keys[pygame.K_j]:
             self.__last_dir = -1
             if not self.__is_jumping:
                 self.__cur_anim = Animations.RunningLeft
             self.__rect.move_ip(-self.__SPEED * dt, 0)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] or keys[pygame.K_l]:
             self.__last_dir = 1
             if not self.__is_jumping:
                 self.__cur_anim = Animations.RunningRight
